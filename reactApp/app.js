@@ -25,7 +25,7 @@ class Todo extends React.Component{
   render(){
     return(
       <li>
-        <button>X</button> 
+        <button>X</button>
         {this.props.completed ? <strike>{this.props.task}</strike> : this.props.task}
       </li>
     )
@@ -40,7 +40,7 @@ class TodoList extends React.Component{
     render(){
       return(
         <ul>
-          {dummyData.map((cv)=>(<Todo task={cv.taskText} completed={cv.completed}/>))}
+          {this.props.todos.map((cv)=>(<Todo task={cv.taskText} completed={cv.completed}/>))}
         </ul>
       )
     }
@@ -49,12 +49,20 @@ class TodoList extends React.Component{
 class TodoApp extends React.Component{
   constructor(props){
     super(props);
+    this.state = {
+      todos: []
+    }
   }
+  componentDidMount(){
+    //this is where we will access the database <3
+    this.setState({todos: this.state.todos.concat(dummyData)})
+  }
+
   render(){
     return (
       <div>
         <InputLine />
-        <TodoList />
+        <TodoList todos={this.state.todos}/>
       </div>
     )
   }
