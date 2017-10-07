@@ -12,6 +12,7 @@ class TodoApp extends React.Component{
       todos: []
     }
     this.addTodo = this.addTodo.bind(this);
+    this.removeTodo = this.removeTodo.bind(this);
   }
   componentDidMount(){
     //this is where we will access the database <3
@@ -21,7 +22,6 @@ class TodoApp extends React.Component{
   }
 
   addTodo(taskString){
-    console.log(taskString);
     this.setState({
       todos: this.state.todos.concat({
         taskText: taskString,
@@ -30,11 +30,17 @@ class TodoApp extends React.Component{
     })
   }
 
+  removeTodo(index){
+    this.setState({
+      todos: this.state.todos.slice(0,index).concat(this.state.todos.slice(index+1))
+    })
+  }
+
   render(){
     return (
       <div>
         <InputLine submit={(str) => (this.addTodo(str))}/>
-        <TodoList todos={this.state.todos} />
+        <TodoList todos={this.state.todos} todoXClick={(i) => (this.removeTodo(i))} />
       </div>
     )
   }

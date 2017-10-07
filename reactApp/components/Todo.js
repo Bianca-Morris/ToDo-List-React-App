@@ -5,10 +5,15 @@ class Todo extends React.Component{
   constructor(props){
     super(props);
   }
+
+  handleRemove(){
+    this.props.xClick();
+  }
+
   render(){
     return(
       <li>
-        <button>X</button>
+        <button onClick={() => this.handleRemove()}>X</button>
         {this.props.completed ? <strike>{this.props.task}</strike> : this.props.task}
       </li>
     )
