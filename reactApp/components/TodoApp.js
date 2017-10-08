@@ -11,8 +11,6 @@ class TodoApp extends React.Component{
     this.state = {
       todos: []
     }
-    this.addTodo = this.addTodo.bind(this);
-    this.removeTodo = this.removeTodo.bind(this);
   }
   componentDidMount(){
     //this is where we will access the database <3
@@ -22,12 +20,22 @@ class TodoApp extends React.Component{
   }
 
   addTodo(taskString){
+    //loop through and ensure that the taskString is unique
+    var alreadyExists = false;
+    this.state.todos.forEach((e)=>{
+      if (e.taskText === taskString){
+        alreadyExists = true;
+        console.log("Couldn't add item! Already exists in todo list!");
+      }
+    });
+    if (!alreadyExists){
     this.setState({
       todos: this.state.todos.concat({
         taskText: taskString,
         completed: false
       })
-    })
+    });
+    }
   }
 
   removeTodo(index){
@@ -36,11 +44,30 @@ class TodoApp extends React.Component{
     })
   }
 
+  toggleTodo(index){
+    //replace a key of an object with
+    var newArr = this.state.todos.map((c, i) => {
+      if (i === index){
+        //toggle the item with the appropriate index
+        c.completed = !c.completed
+        return c;
+      } else {
+        return c;
+      }
+    });
+    console.log(newArr);
+    //replace the existing array with the new one without mutating
+    this.setState({
+      todos: this.state.todos.slice(0,0).concat(newArr)
+    });
+
+  }
+
   render(){
     return (
       <div>
         <InputLine submit={(str) => (this.addTodo(str))}/>
-        <TodoList todos={this.state.todos} todoXClick={(i) => (this.removeTodo(i))} />
+        <TodoList todos={this.state.todos} toggleClick={(i) => (this.toggleTodo(i))} todoXClick={(i) => (this.removeTodo(i))} />
       </div>
     )
   }

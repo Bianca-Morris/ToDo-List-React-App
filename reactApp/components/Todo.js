@@ -10,11 +10,17 @@ class Todo extends React.Component{
     this.props.xClick();
   }
 
+  toggleComplete(){
+    this.props.toggle();
+  }
+
   render(){
     return(
       <li>
         <button onClick={() => this.handleRemove()}>X</button>
-        {this.props.completed ? <strike>{this.props.task}</strike> : this.props.task}
+        <span onClick={() => this.toggleComplete()}>
+          {this.props.completed ? <strike>{this.props.task}</strike> : this.props.task}
+        </span>
       </li>
     )
   }
