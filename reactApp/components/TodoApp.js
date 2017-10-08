@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import InputLine from './InputLine';
 import TodoList from './TodoList';
+import axios from 'axios';
 
 var dummyData = [{taskText:"Wash dog", completed: false}, {taskText:"Wash car", completed: true}, {taskText:"Pick up dinner", completed: false}, {taskText: "Buy milk", completed: false}];
+
+const dbUrl = 'http://localhost:3000/db'
 
 class TodoApp extends React.Component{
   constructor(props){
@@ -28,13 +31,18 @@ class TodoApp extends React.Component{
         console.log("Couldn't add item! Already exists in todo list!");
       }
     });
+
     if (!alreadyExists){
-    this.setState({
-      todos: this.state.todos.concat({
-        taskText: taskString,
-        completed: false
+      axios.post(dbUrl + "/add", {taskText: taskString})
+      .then((response)=>{
+        console.log(response.data);
+        this.setState({
+          todos: this.state.todos.concat(response.data)
+        });
       })
-    });
+      .catch((error)=>{
+        console.log(error);
+      })
     }
   }
 

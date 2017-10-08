@@ -5,12 +5,15 @@ const TodoItem = require('../models/TodoItem.js');
 
 console.log("backend/routes/databaseAccess.js")
 
-router.get('/add', (req, res)=>{
+router.post('/add', (req, res)=>{
   const testTodo = new TodoItem({
-    task: "test task"
+    task: req.body.taskText
   });
   testTodo.save()
-  .then (response => {res.send(response);})
+  .then (response => {
+    console.log("server: " + response);
+    res.send(response);
+  })
   .catch (error => {res.send(error)})
 });
 
